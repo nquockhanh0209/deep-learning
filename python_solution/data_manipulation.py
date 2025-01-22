@@ -1,0 +1,10 @@
+import torch
+x = torch.arange(12, dtype=torch.float32)
+print(x)
+print(x.numel())
+print(x.shape)
+X = x.reshape(3, 4)
+print(X)
+print(torch.zeros((2, 3, 4)))
+print(torch.ones((2, 3, 4)))
+print(torch.exp(X))
