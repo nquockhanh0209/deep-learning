@@ -6,10 +6,14 @@
 using namespace std;
 struct GradientDecent{
     double eta;
+    double gamma;
     function<double(double)> f;
 
     void setEta(double e){
         eta = e;
+    }
+    void setGamma(double g){
+        gamma = g;
     }
     void setF(function<double(double)> function){
         f = function;
@@ -29,20 +33,38 @@ struct GradientDecent{
             }
         }
     }
+
+    double nag_gradient_decent(double &x, int iter){
+        double theta = f(x);
+        for(int i = 0; i < iter; i++){
+            
+            x = gamma*x + eta*df(theta-gamma*x, f);
+            // cout<<x<<endl;
+            theta = theta - x;
+            cout<<i<<endl;
+            if(abs(df(theta-gamma*x, f))<1e-3){
+                break;
+            }
+        }
+        return theta;
+    }
 };
 double f(double x){
-        return pow(x, 2.0) + 5.0*sin(x);
+        return pow(x, 2.0) + 10.0*sin(x);
     }
 
 
 int main()
 {
     double eta = 0.1;
+    double gamma = 0.9;
+
     GradientDecent gd;
     gd.setF(f);
     gd.setEta(eta);
-    double x = -5.0;
-    gd.gradient_decent(x, 100);
-    cout<<x<<endl;
+    gd.setGamma(gamma);
+    double x = 0.0;
+    double min = gd.nag_gradient_decent(x, 1000);
+    cout<<min<<endl;
 
 }
